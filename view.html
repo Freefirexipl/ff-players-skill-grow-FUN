@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>View Teams</title>
+<style>
+body{
+ background:#000;
+ color:#fff;
+ font-family:Arial;
+ padding:20px;
+}
+
+h1{
+ color:#ffcc00;
+ text-align:center;
+ margin-bottom:20px;
+}
+
+.back-btn{
+ display:inline-block;
+ margin-bottom:20px;
+ padding:10px 18px;
+ background:#ff6600;
+ color:black;
+ text-decoration:none;
+ font-weight:bold;
+ border-radius:8px;
+}
+
+.team{
+ border:1px solid #ff6600;
+ margin-bottom:20px;
+ padding:10px;
+ border-radius:10px;
+}
+
+.team h2{
+ color:#ffcc00;
+ margin-bottom:10px;
+}
+
+.player{
+ padding:6px;
+ border-bottom:1px solid #333;
+}
+.player:last-child{
+ border-bottom:none;
+}
+</style>
+</head>
+<body>
+
+<a href="INDEX.HTML" class="back-btn">← Back to Home</a>
+
+<h1>Registered Teams</h1>
+<div id="allTeams"></div>
+
+<script>
+let teams = JSON.parse(localStorage.getItem("teams")) || {};
+
+const container = document.getElementById("allTeams");
+
+for(let hero in teams){
+ let div = document.createElement("div");
+ div.className="team";
+ let html = `<h2>${hero}</h2>`;
+ 
+ if(teams[hero].length===0){
+   html += "<p>No players yet</p>";
+ }else{
+   teams[hero].forEach(p=>{
+     html += `<div class="player">${p}</div>`;
+   });
+ }
+
+ div.innerHTML = html;
+ container.appendChild(div);
+}
+</script>
+
+</body>
+</html>

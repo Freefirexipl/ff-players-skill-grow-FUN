@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard - FreeFire Tournament</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#000;
+ color:white;
+ font-family:'Rajdhani',sans-serif;
+}
+
+/* TOP BAR */
+.topbar{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:12px 18px;
+ background:rgba(0,0,0,0.9);
+ border-bottom:1px solid #00ffff;
+}
+.logo{
+ font-family:'Orbitron';
+ color:#00ffff;
+ font-size:20px;
+}
+.back{
+ color:#ff6600;
+ text-decoration:none;
+ font-weight:bold;
+}
+
+/* TITLE */
+.title{
+ text-align:center;
+ margin:30px 0;
+ font-family:'Orbitron';
+ font-size:36px;
+ color:#00ffff;
+ text-shadow:0 0 20px #00ffff;
+}
+
+/* TABLE */
+.table-box{
+ width:95%;
+ max-width:900px;
+ margin:auto;
+ background:#050505;
+ border-radius:12px;
+ overflow:hidden;
+ box-shadow:0 0 30px #00ffff;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+}
+
+th,td{
+ padding:14px;
+ text-align:center;
+}
+
+th{
+ background:#000;
+ color:#00ffff;
+ font-family:'Orbitron';
+ font-size:16px;
+ border-bottom:1px solid #00ffff;
+}
+
+tr{
+ border-bottom:1px solid #111;
+}
+
+tr:nth-child(even){
+ background:#0a0a0a;
+}
+
+.rank1{color:gold;font-weight:bold;}
+.rank2{color:silver;font-weight:bold;}
+.rank3{color:#cd7f32;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+ <div class="logo">FreeFire X IPL</div>
+ <a class="back" href="INDEX.HTML">⬅ Back to Home</a>
+</div>
+
+<div class="title">LEADERBOARD</div>
+
+<div class="table-box">
+<table>
+<thead>
+<tr>
+ <th>Rank</th>
+ <th>Team</th>
+ <th>Total Players</th>
+ <th>Kills</th>
+ <th>Points</th>
+</tr>
+</thead>
+<tbody id="leaderData">
+</tbody>
+</table>
+</div>
+
+<script>
+/*
+ Example scoring system:
+ Each player = 10 points
+ Each kill = 5 points
+*/
+
+let teams = JSON.parse(localStorage.getItem("teams")) || {
+ "Prabhas":[],
+ "Allu Arjun":[],
+ "NTR":[],
+ "Ram Charan":[],
+ "Yash":[],
+ "Vijay":[]
+};
+
+// Fake kills (you can change later manually)
+let killsData = {
+ "Prabhas":38,
+ "Allu Arjun":34,
+ "NTR":29,
+ "Ram Charan":25,
+ "Yash":31,
+ "Vijay":20
+};
+
+let leaderboard = [];
+
+for(let team in teams){
+ let players = teams[team].length;
+ let kills = killsData[team] || 0;
+ let points = (players * 10) + (kills * 5);
+
+ leaderboard.push({
+  team, players, kills, points
+ });
+}
+
+// Sort by points
+leaderboard.sort((a,b)=>b.points - a.points);
+
+// Render table
+let html="";
+leaderboard.forEach((t,i)=>{
+ let rankClass = i==0?"rank1":i==1?"rank2":i==2?"rank3":"";
+ html += `
+ <tr class="${rankClass}">
+  <td>${i+1}</td>
+  <td>${t.team}</td>
+  <td>${t.players}</td>
+  <td>${t.kills}</td>
+  <td>${t.points}</td>
+ </tr>
+ `;
+});
+
+document.getElementById("leaderData").innerHTML = html;
+</script>
+
+</body>
+</html>
